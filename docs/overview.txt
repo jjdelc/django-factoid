@@ -1,0 +1,37 @@
+===============
+Django Factoids
+===============
+
+Get a random fact or quote on your tempaltes
+
+Instalation
+===========
+    See INSTALL
+
+Usage
+=====
+    Models
+    ~~~~~~
+        You are provided with 2 models:
+        FactoidType: To clasify your factoids
+        Factoid: Store each clasified Factoid
+
+        The Factoid models has a 'get_random' manager that takes a factoid type's
+        name
+            >>> Factoid.objects.get_random('greetings')
+            <Factoid: [Greetings] Hola ...>
+
+    Templatetags
+    ~~~~~~~~~~~~
+    To load the factoids in your templates add
+        {% load factoids %}
+
+    And you van use the 'get_factoid' tempaltetag in either of these ways:
+        {% get_factoid 'greetings' %}
+        Will print in your template a random factoid classified as a greeting
+
+        {% get_factoid 'greetings' as my_factoid %}
+        Will add the factoid's text on 'myfactoid' context variable for future use
+        on your template
+
+and thats it
