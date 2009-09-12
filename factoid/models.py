@@ -51,7 +51,10 @@ class Factoid(models.Model):
     objects = FactoidManager()
 
     def __unicode__(self):
-        return u'[%s] %s ...' % (self.type, self.body[:15])
+        ellipsis = ""
+        if len(self.body) > 15:
+            ellipsis = '...'
+        return u'[%s] %s%s' % (self.type, self.body[:15], ellipsis)
 
     def save(self, *args, **kwargs):
         """

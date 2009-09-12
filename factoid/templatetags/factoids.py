@@ -6,20 +6,6 @@ from factoid.models import Factoid
 
 register = Library()
 
-@register.simple_tag
-def simple_get_factoid(type):
-    """
-    Returns a random factoid based on the type
-    """
-    try:
-        factoid = Factoid.objects.get_random(type).body
-    except Factoid.DoesNotExist:
-        # In case an invalid type gets requested, return an empty string
-        factoid = ''
-
-    return factoid
-
-
 @register.tag('get_factoid')
 def do_get_factoid(parser, token):
     """
