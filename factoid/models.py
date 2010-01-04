@@ -6,6 +6,12 @@ from django.db import models
 from django.core.cache import cache
 
 class FactoidType(models.Model):
+    """
+    A Factoid type allows you to have different kind of factoids in your site
+    such as "Famous quotes", "Funny lines", "Random fact", etc.
+
+    """
+
     FACTS_IDS = 'factoid:type_ids:%s'
 
     name = models.CharField(max_length=128)
@@ -17,6 +23,8 @@ class FactoidType(models.Model):
         # Make sure all names are stored in lowercase
         self.name = self.name.lower()
         super(FactoidType, self).save(*args, **kwargs)
+
+
 
 class FactoidManager(models.Manager):
     def get_random(self, type):
@@ -45,12 +53,28 @@ class FactoidManager(models.Manager):
 
 
 class Factoid(models.Model):
+    """
+    Represents a Factoid
+
+    Most of times you would use the templatetag, but if you do use the 
+    model, you'll need the manager
+
+    >>> factoid_type = FactoidType.objects.get(name='quotes')
+    >>> Factoid.objects.get_random(factoid_type)
+
+    """
+
     type = models.ForeignKey(FactoidType)
     body = models.TextField()
+    extra_info = models.TextField()
 
     objects = FactoidManager()
 
     def __unicode__(self):
+        """
+        Adds an ellipsis if the factoid's length is over 15 chars so
+        big factoids look OK in the admin and other lists
+        """
         ellipsis = ""
         if len(self.body) > 15:
             ellipsis = '...'
